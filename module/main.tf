@@ -104,15 +104,6 @@ locals {
       }
     ]
   ])
-
-  return_route_map = merge([
-    for vpc in concat(var.network_vpc_peers, var.vpc_peers) : {
-      for rt in vpc.route_tables : rt => {
-        region     = vpc.region
-        peering_id = try(aws_vpc_peering_connection.this[vpc.vpc_id].id, null)
-      }
-    }
-  ]...)
 }
 
 resource "aws_route" "vpc_peering" {
