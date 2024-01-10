@@ -8,8 +8,7 @@ resource "aws_subnet" "public" {
 
   tags = {
     Name                                       = "${var.classifier}-${var.region_config.az_ids[each.key]}-pub-subnet"
-    "kubernetes.io/role/elb"                   = 1
-    "kubernetes.io/cluster/d-use1-eks-cluster" = "shared"
+    component                                  = "subnet"
   }
 }
 

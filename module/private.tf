@@ -8,12 +8,8 @@ resource "aws_subnet" "private" {
 
   tags = merge({
     Name                                            = "${var.classifier}-${var.region_config.az_ids[each.key]}-priv-subnet",
-    "kubernetes.io/role/internal-elb"               = 1
-    "kubernetes.io/cluster/${var.name}-eks-cluster" = "shared"
     component                                       = "subnet"
-    },
-    var.karpenter_selector_tag
-  )
+  })
 }
 
 # route table
@@ -41,23 +37,4 @@ resource "aws_route" "default" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.this[each.key].id
   route_table_id         = each.value.id
-}
-
-locals {
-  azure_map = flatten([
-    for rt in aws_route_table.private : [
-      for vpc in var.azure_avd : {
-        route_table_id = rt.id
-        avd_cidr       = vpc.cidr
-      }
-    ]
-  ])
-}
-
-resource "aws_route" "azure_avd" {
-  for_each = { for route in local.azure_map : "${route.route_table_id}_${route.avd_cidr}" => route }
-
-  destination_cidr_block = each.value.avd_cidr
-  gateway_id             = module.vpc.vgw_id
-  route_table_id         = each.value.route_table_id
 }

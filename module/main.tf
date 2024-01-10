@@ -1,6 +1,8 @@
 data "aws_region" "current" {}
 
 data "aws_vpc_ipam_pool" "this" {
+  count = var.enable_ipam ? 1 : 0
+
   filter {
     name   = "description"
     values = ["*${var.ipam_pool}*"]
@@ -14,23 +16,27 @@ data "aws_vpc_ipam_pool" "this" {
 
 # Preview next CIDR from pool
 data "aws_vpc_ipam_preview_next_cidr" "this" {
-  ipam_pool_id   = data.aws_vpc_ipam_pool.this.id
+  count = var.enable_ipam ? 1 : 0
+
+  ipam_pool_id   = data.aws_vpc_ipam_pool.this[0].id
   netmask_length = var.cidr_mask_length
 }
 
 data "external" "subnet_calculator" {
+  count = var.enable_ipam ? 1 : 0
+
   program = ["python3", "${path.module}/subnet.py"]
 
   query = {
-    base_cidr = data.aws_vpc_ipam_preview_next_cidr.this.cidr
+    base_cidr = data.aws_vpc_ipam_preview_next_cidr.this[0].cidr
     num_azs   = length(var.region_config.az_ids)
   }
 }
 
 locals {
-  private_subnets  = split(",", data.external.subnet_calculator.result["private_subnets"])
-  firewall_subnets = split(",", data.external.subnet_calculator.result["firewall_subnets"])
-  public_subnets   = split(",", data.external.subnet_calculator.result["public_subnets"])
+  private_subnets  = (!enable_ipam && length(var.private_subnets) > 0) ? var.private_subnets : split(",", data.external.subnet_calculator[0].result["private_subnets"])
+  firewall_subnets = (!enable_ipam && length(var.firewall_subnets) > 0) ? var.firewall_subnets : split(",", data.external.subnet_calculator[0].result["firewall_subnets"])
+  public_subnets   = (!enable_ipam && length(var.public_subnets) > 0) ? var.public_subnets : split(",", data.external.subnet_calculator[0].result["public_subnets"])
 }
 
 module "vpc" {
@@ -38,7 +44,7 @@ module "vpc" {
   version = "~> 5.1.0"
 
   # vpc
-  cidr                          = data.aws_vpc_ipam_preview_next_cidr.this.cidr
+  cidr                          = (var.enable_ipam) ? data.aws_vpc_ipam_preview_next_cidr.this[0].cidr : var.vpc_cidr
   name                          = var.vpc_name
   instance_tenancy              = "default"
   enable_dns_hostnames          = true

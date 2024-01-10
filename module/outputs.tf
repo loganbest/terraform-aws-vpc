@@ -4,10 +4,6 @@ output "vpc" {
   value       = merge(module.vpc, { vpc_region = data.aws_region.current.name })
 }
 
-output "aws_vpn_connection_route_azure" {
-  value = aws_vpn_connection_route.azure
-}
-
 # natgw.tf
 output "aws_eip" {
   value = aws_eip.this

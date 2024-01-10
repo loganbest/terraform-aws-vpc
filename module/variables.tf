@@ -29,9 +29,16 @@ variable "region_config" {
   })
 }
 
+variable "enable_ipam" {
+  description = "Whether to enable the AWS VPC IPAM or not in CIDR selection (Default: false)"
+  type = bool
+  default = false`
+}
+
 variable "ipam_pool" {
   description = "AWS IPAM Pool Name"
   type        = string
+  default     = null
 }
 
 variable "cidr_mask_length" {
@@ -40,37 +47,7 @@ variable "cidr_mask_length" {
   default     = 21
 }
 
-# AZURE AVD
-variable "azure_avd" {
-  description = "Map of azure avd information from terragrunt globals"
-  type        = any
-}
-
-variable "karpenter_selector_tag" {
-  description = "Tag to find subnets and security groups that karpenter can manage"
-  type        = map(string)
-  default     = {}
-}
-
 # VPC PEERS
-variable "enable_networking_peers" {
-  description = "Enables VPC Peering with the networking prod VPCs"
-  type        = bool
-  default     = false
-}
-
-variable "network_vpc_peers" {
-  description = "List of maps defining the VPCs to peer with"
-  type = list(object({
-    vpc_id       = string
-    account_id   = string
-    region       = string
-    cidr         = string
-    route_tables = list(string)
-  }))
-  default = []
-}
-
 variable "vpc_peers" {
   description = "List of maps defining the VPCs to peer with"
   type = list(map(object({
