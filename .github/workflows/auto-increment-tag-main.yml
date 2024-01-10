@@ -1,0 +1,45 @@
+###############################################
+# Bump tag with minor version unless the merge commit message contains #major or #patch
+###############################################
+name: Bump version
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions: read-all
+
+jobs:
+  tag_and_release:
+    permissions:
+      contents: write # for actions/checkout to fetch code
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so follow-up steps can access it
+      - uses: actions/checkout@v3
+        name: Checkout source code
+        with:
+          fetch-depth: '0'
+
+      - name: Bump version and push tag
+        id: tag
+        uses: anothrNick/github-tag-action@v1 # Don't use @master or @v1 unless you're happy to test the latest version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: false
+          RELEASE_BRANCH: main
+
+      - name: automatic-release
+        uses: marvinpinto/action-automatic-releases@v1.2.1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: ${{ steps.tag.outputs.new_tag }}
+          prerelease: false

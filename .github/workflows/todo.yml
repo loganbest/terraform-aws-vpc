@@ -1,0 +1,40 @@
+name: Create issues from TODOs
+
+# Controls when the workflow will run
+on:
+  push: # do not set multiple branches, todos might be added and then get referenced by themselves in case of a merge
+    branches:
+      - main
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  repository-projects: read
+  contents: read
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "todos"
+  todos:
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout source code
+
+      - name: Run Issue Bot
+        uses: derjuulsn/todo-issue@main
+        with:
+          autoAssign: oscarmendoza123
+          blobLines: 5
+          blobLinesBefore: 0
+          caseSensitive: false
+          reopenClosed: true
+          excludePattern: '^(.terraform/|.terragrunt/)'
+          titleSimilarity: 60
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
