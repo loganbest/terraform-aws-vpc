@@ -16,11 +16,6 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
 
-env:
-  AWS_REGION: us-east-1
-  AWS_ACCOUNT_ID: "078664432427" # dev account
-
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "tflint"
