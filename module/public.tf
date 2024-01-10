@@ -7,8 +7,8 @@ resource "aws_subnet" "public" {
   availability_zone_id = var.region_config.az_ids[each.key]
 
   tags = {
-    Name                                       = "${var.classifier}-${var.region_config.az_ids[each.key]}-pub-subnet"
-    component                                  = "subnet"
+    Name      = "${var.classifier}-${var.region_config.az_ids[each.key]}-pub-subnet"
+    component = "subnet"
   }
 }
 

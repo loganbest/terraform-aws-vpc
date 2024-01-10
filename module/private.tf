@@ -7,8 +7,8 @@ resource "aws_subnet" "private" {
   availability_zone_id = var.region_config.az_ids[each.key]
 
   tags = merge({
-    Name                                            = "${var.classifier}-${var.region_config.az_ids[each.key]}-priv-subnet",
-    component                                       = "subnet"
+    Name      = "${var.classifier}-${var.region_config.az_ids[each.key]}-priv-subnet",
+    component = "subnet"
   })
 }
 

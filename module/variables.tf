@@ -31,8 +31,8 @@ variable "region_config" {
 
 variable "enable_ipam" {
   description = "Whether to enable the AWS VPC IPAM or not in CIDR selection (Default: false)"
-  type = bool
-  default = false`
+  type        = bool
+  default     = false
 }
 
 variable "ipam_pool" {
