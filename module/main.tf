@@ -34,9 +34,9 @@ data "external" "subnet_calculator" {
 }
 
 locals {
-  private_subnets  = (!enable_ipam && length(var.private_subnets) > 0) ? var.private_subnets : split(",", data.external.subnet_calculator[0].result["private_subnets"])
-  firewall_subnets = (!enable_ipam && length(var.firewall_subnets) > 0) ? var.firewall_subnets : split(",", data.external.subnet_calculator[0].result["firewall_subnets"])
-  public_subnets   = (!enable_ipam && length(var.public_subnets) > 0) ? var.public_subnets : split(",", data.external.subnet_calculator[0].result["public_subnets"])
+  private_subnets  = (!var.enable_ipam && length(var.private_subnets_cidrs) > 0) ? var.private_subnets_cidrs : try(split(",", data.external.subnet_calculator[0].result["private_subnets"]), [])
+  firewall_subnets = (!var.enable_ipam && length(var.firewall_subnets_cidrs) > 0) ? var.firewall_subnets_cidrs : try(split(",", data.external.subnet_calculator[0].result["firewall_subnets"]), [])
+  public_subnets   = (!var.enable_ipam && length(var.public_subnets_cidrs) > 0) ? var.public_subnets_cidrs : try(split(",", data.external.subnet_calculator[0].result["public_subnets"]), [])
 }
 
 module "vpc" {
@@ -97,7 +97,7 @@ resource "aws_vpc_peering_connection_options" "accepter" {
 locals {
   peering_map = flatten([
     for rt in aws_route_table.private : [
-      for vpc in concat(var.network_vpc_peers, var.vpc_peers) : {
+      for vpc in var.vpc_peers : {
         route_table_id = rt.id
         peer_cidr      = vpc.cidr
         peering_id     = try(aws_vpc_peering_connection.this[vpc.vpc_id].id, null)

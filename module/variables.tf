@@ -25,8 +25,32 @@ variable "region_config" {
     enabled  = bool
     short    = string
     az_ids   = list(string)
-    registry = string
   })
+}
+
+# SUBNETS
+variable "public_subnets_cidrs" {
+  description = "list of strings: declare cidrs for the public subnets"
+  type        = list(string)
+  default     = []
+}
+
+variable "private_subnets_cidrs" {
+  description = "list of strings: declare cidrs for the private subnets"
+  type        = list(string)
+  default     = []
+}
+
+variable "firewall_subnets_cidrs" {
+  description = "list of strings: declare cidrs for the firewall subnets"
+  type        = list(string)
+  default     = []
+}
+
+
+variable "availability_zone_ids" {
+  description = "List of AZ IDs for VPC subnets"
+  type        = list(string)
 }
 
 variable "enable_ipam" {

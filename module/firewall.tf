@@ -30,11 +30,3 @@ resource "aws_route_table_association" "firewall" {
   subnet_id      = aws_subnet.firewall[each.key].id
   route_table_id = aws_route_table.firewall[each.key].id
 }
-
-resource "aws_route" "default" {
-  for_each = aws_route_table.firewall
-
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.this[each.key].id
-  route_table_id         = each.value.id
-}

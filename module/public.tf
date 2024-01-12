@@ -21,15 +21,6 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.this.id
   }
 
-  dynamic "route" {
-    for_each = var.azure_avd
-
-    content {
-      cidr_block = route.value.cidr
-      gateway_id = module.vpc.vgw_id
-    }
-  }
-
   tags = {
     Name      = "${var.name}-pub-rt"
     component = "rt"
