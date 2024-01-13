@@ -8,23 +8,23 @@ variable "classifier" {
   type        = string
 }
 
-variable "namespace" {
-  type        = string
-  default     = null
-  description = "ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are    globally unique"
-}
+#variable "namespace" {
+  #type        = string
+  #default     = null
+  #description = "ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are    globally unique"
+#}
 
-variable "environment" {
-  type        = string
-  default     = null
-  description = "ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT'"
-}
+#variable "environment" {
+  #type        = string
+  #default     = null
+  #description = "ID element. Usually used for region e.g. 'uw2', 'us-west-2', OR role 'prod', 'staging', 'dev', 'UAT'"
+#}
 
-variable "stage" {
-  type        = string
-  default     = null
-  description = "ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release'"
-}
+#variable "stage" {
+  #type        = string
+  #default     = null
+  #description = "ID element. Usually used to indicate role, e.g. 'prod', 'staging', 'source', 'build', 'test', 'deploy', 'release'"
+#}
 
 variable "name" {
   type        = string
@@ -35,21 +35,21 @@ variable "name" {
   EOT
 }
 
-variable "tenant" {
-  type        = string
-  default     = null
-  description = "ID element _(Rarely used, not included by default)_. A customer identifier, indicating who this instance of a         resource is for"
-}
+#variable "tenant" {
+  #type        = string
+  #default     = null
+  #description = "ID element _(Rarely used, not included by default)_. A customer identifier, indicating who this instance of a         resource is for"
+#}
 
-variable "label_order" {
-  type        = list(string)
-  default     = null
-  description = <<-EOT
-    The order in which the labels (ID elements) appear in the `id`.
-    Defaults to ["namespace", "environment", "stage", "name", "attributes"].
-    You can omit any of the 6 labels ("tenant" is the 6th), but at least one must be present.
-    EOT
-}
+#variable "label_order" {
+  #type        = list(string)
+  #default     = null
+  #description = <<-EOT
+    #The order in which the labels (ID elements) appear in the `id`.
+    #Defaults to ["namespace", "environment", "stage", "name", "attributes"].
+    #You can omit any of the 6 labels ("tenant" is the 6th), but at least one must be present.
+    #EOT
+#}
 
 # VPC
 variable "vpc_cidr" {
@@ -83,12 +83,6 @@ variable "firewall_subnets_cidrs" {
   description = "list of strings: declare cidrs for the firewall subnets"
   type        = list(string)
   default     = []
-}
-
-
-variable "availability_zone_ids" {
-  description = "List of AZ IDs for VPC subnets"
-  type        = list(string)
 }
 
 variable "enable_ipam" {
