@@ -7,9 +7,8 @@ resource "aws_subnet" "public" {
   availability_zone_id = var.region_config.az_ids[each.key]
 
   tags = {
-    Name                                       = "${var.classifier}-${var.region_config.az_ids[each.key]}-pub-subnet"
-    "kubernetes.io/role/elb"                   = 1
-    "kubernetes.io/cluster/d-use1-eks-cluster" = "shared"
+    Name      = "${var.classifier}-${var.region_config.az_ids[each.key]}-pub-subnet"
+    component = "subnet"
   }
 }
 
@@ -20,15 +19,6 @@ resource "aws_route_table" "public" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.this.id
-  }
-
-  dynamic "route" {
-    for_each = var.azure_avd
-
-    content {
-      cidr_block = route.value.cidr
-      gateway_id = module.vpc.vgw_id
-    }
   }
 
   tags = {

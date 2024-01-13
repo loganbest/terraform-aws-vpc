@@ -1,6 +1,8 @@
-# elastic ip for private subnets
+# elastic ip for natgw
 resource "aws_eip" "this" {
   for_each = { for k, v in var.region_config.az_ids : k => v }
+
+  domain = "vpc"
 
   tags = {
     Name      = "${var.classifier}-${each.value}-eip"

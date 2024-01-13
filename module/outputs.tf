@@ -4,10 +4,6 @@ output "vpc" {
   value       = merge(module.vpc, { vpc_region = data.aws_region.current.name })
 }
 
-output "aws_vpn_connection_route_azure" {
-  value = aws_vpn_connection_route.azure
-}
-
 # natgw.tf
 output "aws_eip" {
   value = aws_eip.this
@@ -58,3 +54,25 @@ output "aws_route_table_association_public" {
 output "aws_internet_gateway" {
   value = aws_internet_gateway.this
 }
+
+# firewall.tf
+output "aws_subnet_firewall_ids" {
+  value = [for subnet in aws_subnet.firewall : subnet.id]
+}
+
+output "aws_subnet_firewall" {
+  value = aws_subnet.firewall
+}
+
+output "aws_route_table_firewall" {
+  value = aws_route_table.firewall
+}
+
+output "aws_route_table_association_firewall" {
+  value = aws_route_table_association.firewall
+}
+
+output "aws_firewall_route_table_ids" {
+  value = [for k, v in aws_route_table.firewall : v.id]
+}
+

@@ -1,6 +1,8 @@
 data "aws_region" "current" {}
 
 data "aws_vpc_ipam_pool" "this" {
+  count = var.enable_ipam ? 1 : 0
+
   filter {
     name   = "description"
     values = ["*${var.ipam_pool}*"]
@@ -14,23 +16,27 @@ data "aws_vpc_ipam_pool" "this" {
 
 # Preview next CIDR from pool
 data "aws_vpc_ipam_preview_next_cidr" "this" {
-  ipam_pool_id   = data.aws_vpc_ipam_pool.this.id
+  count = var.enable_ipam ? 1 : 0
+
+  ipam_pool_id   = data.aws_vpc_ipam_pool.this[0].id
   netmask_length = var.cidr_mask_length
 }
 
 data "external" "subnet_calculator" {
+  count = var.enable_ipam ? 1 : 0
+
   program = ["python3", "${path.module}/subnet.py"]
 
   query = {
-    base_cidr = data.aws_vpc_ipam_preview_next_cidr.this.cidr
+    base_cidr = data.aws_vpc_ipam_preview_next_cidr.this[0].cidr
     num_azs   = length(var.region_config.az_ids)
   }
 }
 
 locals {
-  private_subnets  = split(",", data.external.subnet_calculator.result["private_subnets"])
-  firewall_subnets = split(",", data.external.subnet_calculator.result["firewall_subnets"])
-  public_subnets   = split(",", data.external.subnet_calculator.result["public_subnets"])
+  private_subnets  = (!var.enable_ipam && length(var.private_subnets_cidrs) > 0) ? var.private_subnets_cidrs : try(split(",", data.external.subnet_calculator[0].result["private_subnets"]), [])
+  firewall_subnets = (!var.enable_ipam && length(var.firewall_subnets_cidrs) > 0) ? var.firewall_subnets_cidrs : try(split(",", data.external.subnet_calculator[0].result["firewall_subnets"]), [])
+  public_subnets   = (!var.enable_ipam && length(var.public_subnets_cidrs) > 0) ? var.public_subnets_cidrs : try(split(",", data.external.subnet_calculator[0].result["public_subnets"]), [])
 }
 
 module "vpc" {
@@ -38,8 +44,8 @@ module "vpc" {
   version = "~> 5.1.0"
 
   # vpc
-  cidr                          = data.aws_vpc_ipam_preview_next_cidr.this.cidr
-  name                          = var.vpc_name
+  cidr                          = (var.enable_ipam) ? data.aws_vpc_ipam_preview_next_cidr.this[0].cidr : var.vpc_cidr
+  name                          = var.name
   instance_tenancy              = "default"
   enable_dns_hostnames          = true
   manage_default_security_group = true
@@ -91,22 +97,13 @@ resource "aws_vpc_peering_connection_options" "accepter" {
 locals {
   peering_map = flatten([
     for rt in aws_route_table.private : [
-      for vpc in concat(var.network_vpc_peers, var.vpc_peers) : {
+      for vpc in var.vpc_peers : {
         route_table_id = rt.id
         peer_cidr      = vpc.cidr
-        peering_id = try(aws_vpc_peering_connection.this[vpc.vpc_id].id, null)
+        peering_id     = try(aws_vpc_peering_connection.this[vpc.vpc_id].id, null)
       }
     ]
   ])
-
-  return_route_map = merge([
-    for vpc in concat(var.network_vpc_peers, var.vpc_peers) : {
-      for rt in vpc.route_tables : rt => {
-        region = vpc.region
-        peering_id = try(aws_vpc_peering_connection.this[vpc.vpc_id].id, null)
-      }
-    }
-  ]...)
 }
 
 resource "aws_route" "vpc_peering" {
