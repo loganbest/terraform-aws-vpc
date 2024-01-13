@@ -6,11 +6,11 @@ output "vpc" {
 
 # natgw.tf
 output "aws_eip" {
-  value = aws_eip.this
+  value = try(aws_eip.this, null)
 }
 
 output "aws_nat_gateway" {
-  value = aws_nat_gateway.this
+  value = try(aws_nat_gateway.this, null)
 }
 
 # private.tf
@@ -36,11 +36,11 @@ output "aws_route_table_ids" {
 
 # public.tf
 output "aws_subnet_public_ids" {
-  value = [for subnet in aws_subnet.public : subnet.id]
+  value = [for subnet in try(aws_subnet.public, []) : subnet.id]
 }
 
 output "aws_subnet_public" {
-  value = aws_subnet.public
+  value = try(aws_subnet.public, null)
 }
 
 output "aws_route_table_public" {
@@ -48,7 +48,7 @@ output "aws_route_table_public" {
 }
 
 output "aws_route_table_association_public" {
-  value = aws_route_table_association.public
+  value = try(aws_route_table_association.public, null)
 }
 
 output "aws_internet_gateway" {
