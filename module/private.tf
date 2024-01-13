@@ -38,7 +38,7 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_route" "default" {
-  for_each = { for k, v in aws_route_table.private : k => v if (length(local.public_subnets) > 0) }
+  for_each = { for k, v in aws_route_table.private : k => v if(length(local.public_subnets) > 0) }
 
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.this[each.key].id
