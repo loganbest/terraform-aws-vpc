@@ -6,10 +6,13 @@ resource "aws_subnet" "public" {
   cidr_block           = local.public_subnets[each.key]
   availability_zone_id = var.region_config.az_ids[each.key]
 
-  tags = {
-    Name      = "${var.classifier}-${var.region_config.az_ids[each.key]}-pub-subnet"
-    component = "subnet"
-  }
+  tags = merge(
+    module.this.tags,
+    {
+      Name      = "${var.name}-${var.region_config.az_ids[each.key]}-pub-subnet"
+      component = "subnet"
+    }
+  )
 }
 
 # PUBLIC SUBNETS ROUTE TABLE -----------------
@@ -21,10 +24,13 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.this.id
   }
 
-  tags = {
-    Name      = "${var.name}-pub-rt"
-    component = "rt"
-  }
+  tags = merge(
+    module.this.tags,
+    {
+      Name      = "${var.name}-pub-rt"
+      component = "rt"
+    }
+  )
 }
 # route table public subnet association
 resource "aws_route_table_association" "public" {
@@ -39,8 +45,11 @@ resource "aws_route_table_association" "public" {
 resource "aws_internet_gateway" "this" {
   vpc_id = module.vpc.vpc_id
 
-  tags = {
-    Name      = "${var.name}-pub-igw"
-    component = "igw"
-  }
+  tags = merge(
+    module.this.tags,
+    {
+      Name      = "${var.name}-pub-igw"
+      component = "igw"
+    }
+  )
 }

@@ -6,10 +6,13 @@ resource "aws_subnet" "firewall" {
   cidr_block           = local.firewall_subnets[each.key]
   availability_zone_id = var.region_config.az_ids[each.key]
 
-  tags = merge({
-    Name      = "${var.classifier}-${var.region_config.az_ids[each.key]}-firewall-subnet",
-    component = "subnet"
-  })
+  tags = merge(
+    module.this.tags,
+    {
+      Name      = "${var.name}-${var.region_config.az_ids[each.key]}-firewall-subnet",
+      component = "subnet"
+    }
+  )
 }
 
 # route table
@@ -18,10 +21,13 @@ resource "aws_route_table" "firewall" {
 
   vpc_id = module.vpc.vpc_id
 
-  tags = {
-    Name      = "${var.classifier}-${each.value}-firewall-rt"
-    component = "rt"
-  }
+  tags = merge(
+    module.this.tags,
+    {
+      Name      = "${var.name}-${each.value}-firewall-rt"
+      component = "rt"
+    }
+  )
 }
 # route table firewall subnet association
 resource "aws_route_table_association" "firewall" {

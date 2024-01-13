@@ -6,10 +6,13 @@ resource "aws_subnet" "private" {
   cidr_block           = local.private_subnets[each.key]
   availability_zone_id = var.region_config.az_ids[each.key]
 
-  tags = merge({
-    Name      = "${var.classifier}-${var.region_config.az_ids[each.key]}-priv-subnet",
-    component = "subnet"
-  })
+  tags = merge(
+    module.this.tags,
+    {
+      Name      = "${var.name}-${var.region_config.az_ids[each.key]}-priv-subnet",
+      component = "subnet"
+    }
+  )
 }
 
 # route table
@@ -18,10 +21,13 @@ resource "aws_route_table" "private" {
 
   vpc_id = module.vpc.vpc_id
 
-  tags = {
-    Name      = "${var.classifier}-${each.value}-priv-rt"
-    component = "rt"
-  }
+  tags = merge(
+    module.this.tags,
+    {
+      Name      = "${var.name}-${each.value}-priv-rt"
+      component = "rt"
+    }
+  )
 }
 # route table private subnet association
 resource "aws_route_table_association" "private" {
@@ -32,7 +38,7 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_route" "default" {
-  for_each = aws_route_table.private
+  for_each = { for k, v in aws_route_table.private : k => v if (length(local.public_subnets) > 0) }
 
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.this[each.key].id
