@@ -45,7 +45,7 @@ module "vpc" {
 
   # vpc
   cidr                          = (var.enable_ipam) ? data.aws_vpc_ipam_preview_next_cidr.this[0].cidr : var.vpc_cidr
-  name                          = var.vpc_name
+  name                          = var.name
   instance_tenancy              = "default"
   enable_dns_hostnames          = true
   manage_default_security_group = true
