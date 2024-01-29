@@ -9,7 +9,7 @@ resource "aws_subnet" "public" {
   tags = merge(
     module.this.tags,
     {
-      Name      = "${var.name}-${var.region_config.az_ids[each.key]}-pub-subnet"
+      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${var.region_config.az_ids[each.key]}-pub-subnet"
       component = "subnet"
     }
   )
@@ -27,7 +27,7 @@ resource "aws_route_table" "public" {
   tags = merge(
     module.this.tags,
     {
-      Name      = "${var.name}-pub-rt"
+      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-pub-rt"
       component = "rt"
     }
   )
@@ -48,7 +48,7 @@ resource "aws_internet_gateway" "this" {
   tags = merge(
     module.this.tags,
     {
-      Name      = "${var.name}-pub-igw"
+      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-pub-igw"
       component = "igw"
     }
   )

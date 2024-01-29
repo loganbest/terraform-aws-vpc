@@ -32,6 +32,12 @@ variable "firewall_subnets_cidrs" {
   default     = []
 }
 
+variable "enable_anf" {
+  description = "Whether to enable the components needed for using AWS Network Firewall (Default: false)"
+  type        = bool
+  default     = false
+}
+
 variable "enable_ipam" {
   description = "Whether to enable the AWS VPC IPAM or not in CIDR selection (Default: false)"
   type        = bool
