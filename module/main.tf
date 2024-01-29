@@ -1,5 +1,4 @@
 data "aws_region" "current" {}
-data "aws_default_tags" "this" {}
 
 data "aws_vpc_ipam_pool" "this" {
   count = var.enable_ipam ? 1 : 0
