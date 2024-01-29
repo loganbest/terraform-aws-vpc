@@ -9,7 +9,7 @@ resource "aws_subnet" "private" {
   tags = merge(
     module.this.tags,
     {
-      Name      = "${var.name}-${var.region_config.az_ids[each.key]}-priv-subnet",
+      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${var.region_config.az_ids[each.key]}-priv-subnet",
       component = "subnet"
     }
   )
@@ -24,7 +24,7 @@ resource "aws_route_table" "private" {
   tags = merge(
     module.this.tags,
     {
-      Name      = "${var.name}-${each.value}-priv-rt"
+      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${each.value}-priv-rt"
       component = "rt"
     }
   )

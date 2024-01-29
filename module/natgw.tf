@@ -7,7 +7,7 @@ resource "aws_eip" "this" {
   tags = merge(
     module.this.tags,
     {
-      Name      = "${var.name}-${each.value}-eip"
+      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${each.value}-eip"
       component = "eip"
     }
   )
@@ -22,7 +22,7 @@ resource "aws_nat_gateway" "this" {
   tags = merge(
     module.this.tags,
     {
-      Name      = "${var.name}-${each.value}-natgw"
+      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${each.value}-natgw"
       component = "natgw"
     }
   )
