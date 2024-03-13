@@ -51,6 +51,9 @@ module "vpc" {
   manage_default_security_group = true
   manage_default_route_table    = true
   manage_default_network_acl    = true
+
+  default_security_group_ingress = var.default_security_group_ingress
+  default_security_group_egress  = var.default_security_group_egress
 }
 
 # VPC Peering with defined VPCs
