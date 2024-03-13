@@ -13,6 +13,32 @@ variable "region_config" {
   })
 }
 
+variable "default_security_group_ingress" {
+  description = "Ingress rules for the VPC Default Security Group. By default set for allow all"
+  type = list(map(string))
+  default = [
+    {
+      cidr_blocks = "0.0.0.0/0"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+    }
+  ]
+}
+
+variable "default_security_group_egress" {
+  description = "Egress rules for the VPC Default Security Group. By default set for allow all"
+  type = list(map(string))
+  default = [
+    {
+      cidr_blocks = "0.0.0.0/0"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+    }
+  ]
+}
+
 # SUBNETS
 variable "public_subnets_cidrs" {
   description = "list of strings: declare cidrs for the public subnets"
