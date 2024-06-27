@@ -14,29 +14,15 @@ variable "region_config" {
 }
 
 variable "default_security_group_ingress" {
-  description = "Ingress rules for the VPC Default Security Group. By default set for allow all"
+  description = "Ingress rules for the VPC Default Security Group. By default set for allow nothing"
   type = list(map(string))
-  default = [
-    {
-      cidr_blocks = "0.0.0.0/0"
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-    }
-  ]
+  default = []
 }
 
 variable "default_security_group_egress" {
-  description = "Egress rules for the VPC Default Security Group. By default set for allow all"
+  description = "Egress rules for the VPC Default Security Group. By default set for allow nothing"
   type = list(map(string))
-  default = [
-    {
-      cidr_blocks = "0.0.0.0/0"
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-    }
-  ]
+  default = []
 }
 
 # SUBNETS
