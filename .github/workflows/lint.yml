@@ -30,15 +30,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout source code
-
-      #- name: Configure AWS Credentials
-        #uses: aws-actions/configure-aws-credentials@v3
-        #with:
-          #role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github/terraform
-          #role-session-name: actions-${{ github.event.repository.name }}-session
-          #aws-region: ${{ env.AWS_REGION }}
 
       - uses: actions/cache@v3
         name: Cache plugin dir
@@ -46,7 +39,7 @@ jobs:
           path: ~/.tflint.d/plugins
           key: tflint-${{ hashFiles('.tflint.hcl') }}
 
-      - uses: terraform-linters/setup-tflint@v3
+      - uses: terraform-linters/setup-tflint@v4
         name: Setup TFLint
         with:
           tflint_version: latest
