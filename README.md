@@ -1,33 +1,11 @@
-# terraform-template
+# terraform-aws-vpc
 
-Replace with description
+I created this module to have an all-in-one VPC module that supports IPAM and AWS Network Firewall out of the box using best practices.
 
 ``` hcl
 "enter example code here from terragrunt"
 ```
 
-<!-- BEGIN_TF_DOCS -->
-## Requirements
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
-No requirements.
-
-## Providers
-
-No providers.
-
-## Modules
-
-No modules.
-
-## Resources
-
-No resources.
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-No outputs.
-<!-- END_TF_DOCS -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
