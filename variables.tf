@@ -15,14 +15,14 @@ variable "region_config" {
 
 variable "default_security_group_ingress" {
   description = "Ingress rules for the VPC Default Security Group. By default set for allow nothing"
-  type = list(map(string))
-  default = []
+  type        = list(map(string))
+  default     = []
 }
 
 variable "default_security_group_egress" {
   description = "Egress rules for the VPC Default Security Group. By default set for allow nothing"
-  type = list(map(string))
-  default = []
+  type        = list(map(string))
+  default     = []
 }
 
 # SUBNETS

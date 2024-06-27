@@ -24,22 +24,21 @@ jobs:
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so follow-up steps can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout source code
         with:
           fetch-depth: '0'
 
       - name: Bump version and push tag
         id: tag
-        uses: anothrNick/github-tag-action@v1 # Don't use @master or @v1 unless you're happy to test the latest version
+        uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: false
           RELEASE_BRANCH: main
 
-      - name: automatic-release
-        uses: marvinpinto/action-automatic-releases@v1.2.1
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: ${{ steps.tag.outputs.new_tag }}
-          prerelease: false
+          tag_name: ${{ steps.tag.outputs.new_tag }}
+          make_latest: true

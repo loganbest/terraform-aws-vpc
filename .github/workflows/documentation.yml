@@ -25,7 +25,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so follow-up steps can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout source code
         with:
           ref: ${{ github.event.pull_request.head.ref }}
@@ -36,6 +36,8 @@ jobs:
           working-dir: .
           output-file: README.md
           output-method: inject
+          template: |-
+            <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+            {{ .Content }}
+            <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
           git-push: "true"
-          recursive: "true"
-          recursive-path: "module"
