@@ -42,7 +42,8 @@ jobs:
           framework: terraform
 
       - name: Run trivy with reviewdog output on the PR
-        uses: reviewdog/action-trivy@v1
+        #uses: reviewdog/action-trivy@v1
+        uses: loganbest/action-trivy@lb/fixtrivycommand
         with:
           github_token: ${{ secrets.github_token }}
           trivy_command: filesystem
@@ -52,4 +53,4 @@ jobs:
           filter_mode: nofilter
           fail_on_error: true
           flags: -tee
-          trivy_flags: "--tf-exclude-downloaded-modules"
+          trivy_flags: "--scanners secret,misconfig --tf-exclude-downloaded-modules"
