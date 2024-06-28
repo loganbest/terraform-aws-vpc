@@ -45,7 +45,7 @@ jobs:
         uses: reviewdog/action-trivy@v1
         with:
           github_token: ${{ secrets.github_token }}
-          trivy_command: fs
+          trivy_command: filesystem
           trivy_target: .
           level: info
           reporter: github-pr-review
