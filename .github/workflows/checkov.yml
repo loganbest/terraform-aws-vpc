@@ -40,3 +40,18 @@ jobs:
           skip_check: CKV_TF_1
           directory: module/
           framework: terraform
+
+      - name: Run trivy with reviewdog output on the PR
+        #uses: reviewdog/action-trivy@v1
+        # temporary until this is merged: https://github.com/reviewdog/action-trivy/pull/51
+        uses: loganbest/action-trivy@main
+        with:
+          github_token: ${{ secrets.github_token }}
+          trivy_command: filesystem
+          trivy_target: .
+          level: info
+          reporter: github-pr-review
+          filter_mode: nofilter
+          fail_on_error: true
+          flags: -tee
+          trivy_flags: "--scanners secret,misconfig --tf-exclude-downloaded-modules"
