@@ -53,4 +53,4 @@ jobs:
           filter_mode: nofilter
           fail_on_error: true
           flags: -tee
-          trivy_flags: "--scanners secret,misconfig --tf-exclude-downloaded-modules"
+          trivy_flags: "--scanners secret,misconfig --ignorefile ./.trivyignore.yaml --tf-exclude-downloaded-modules"
