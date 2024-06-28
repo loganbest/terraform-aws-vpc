@@ -52,4 +52,4 @@ jobs:
           filter_mode: nofilter
           fail_on_error: true
           flags: -tee
-          trivy_flags: "--ignorefile ./.trivyignore.yaml --tf-exclude-downloaded-modules"
+          trivy_flags: "--tf-exclude-downloaded-modules"
