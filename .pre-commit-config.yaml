@@ -1,24 +1,50 @@
 repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: 'v4.5.0' # latest from: https://github.com/pre-commit/pre-commit-hooks/releases
+  hooks:
+  - id: check-yaml
+  - id: check-json
+  - id: pretty-format-json
+    args:
+    - "--autofix"
+    - "--indent=4"
+    - "--no-sort-keys"
+  - id: check-shebang-scripts-are-executable
+  - id: check-symlinks
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+  - id: detect-aws-credentials
+    args: [--allow-missing-credentials]
+  - id: detect-private-key
+  - id: check-added-large-files
+  - id: check-ast
+  - id: check-byte-order-marker
+  - id: check-builtin-literals
+  - id: check-case-conflict
+  - id: check-docstring-first
+  - id: check-executables-have-shebangs
+  - id: check-shebang-scripts-are-executable
+  - id: requirements-txt-fixer
+  - id: sort-simple-yaml
 
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
-    hooks:
-      - id: check-json
-      - id: check-merge-conflict
-      - id: check-yaml
-      - id: detect-private-key
-      - id: pretty-format-json
-        args:
-          - --autofix
-      - id: trailing-whitespace
+- repo: https://github.com/bridgecrewio/checkov.git
+  rev: '3.2.236' # Get the latest from: https://github.com/bridgecrewio/checkov/releases
+  hooks:
+  - id: checkov
+    args: ["--quiet", "--skip-check", "CKV_TF_1"]
+  #- id: checkov_secrets
 
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.41.0
-    hooks:
-      - id: markdownlint
+- repo: https://github.com/gruntwork-io/pre-commit
+  rev: 'v0.1.23' # Get the latest from: https://github.com/gruntwork-io/pre-commit/releases
+  hooks:
+    - id: terraform-fmt
+    - id: terraform-validate
+    - id: tflint
+      args:
+        - "--recursive"
+        - "--config=__GIT_ROOT__/.tflint.hcl"
 
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.91.0
-    hooks:
-      - id: terraform_docs
-      - id: terraform_fmt
+- repo: https://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.92.2 # Get the latest from: https://github.com/antonbabenko/pre-commit-terraform/releases
+  hooks:
+  - id: terraform_docs

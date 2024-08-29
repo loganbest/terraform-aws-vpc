@@ -75,4 +75,3 @@ output "aws_route_table_association_firewall" {
 output "aws_firewall_route_table_ids" {
   value = [for k, v in aws_route_table.firewall : v.id]
 }
-

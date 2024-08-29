@@ -6,7 +6,7 @@ I created this module to have an all-in-one VPC module that supports IPAM and AW
 "enter example code here from terragrunt"
 ```
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -113,4 +113,4 @@ I created this module to have an all-in-one VPC module that supports IPAM and AW
 | <a name="output_aws_subnet_public"></a> [aws\_subnet\_public](#output\_aws\_subnet\_public) | n/a |
 | <a name="output_aws_subnet_public_ids"></a> [aws\_subnet\_public\_ids](#output\_aws\_subnet\_public\_ids) | public.tf |
 | <a name="output_vpc"></a> [vpc](#output\_vpc) | Full VPC submodule output |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
