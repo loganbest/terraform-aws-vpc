@@ -38,7 +38,6 @@ jobs:
           output_format: cli
           output_file_path: console
           skip_check: CKV_TF_1
-          directory: module/
           framework: terraform
 
       - name: Run trivy with reviewdog output on the PR
