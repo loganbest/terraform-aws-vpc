@@ -11,6 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+    - uses: actions/cache@v3
+      name: Cache plugin dir
+      with:
+        path: ~/.tflint.d/plugins
+        key: tflint-${{ hashFiles('.tflint.hcl') }}
+
+    - uses: terraform-linters/setup-tflint@v4
+      name: Setup TFLint
+      with:
+        tflint_version: latest
+
+    - name: Show version
+      run: tflint --version
     - name: Setup Terraform docs
       env:
         # Can be 'latest' or valid version like '0.15.0'
@@ -25,5 +38,5 @@ jobs:
         && chmod +x terraform-docs && sudo mv terraform-docs /usr/bin/
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.12'
     - uses: pre-commit/action@v3.0.1
