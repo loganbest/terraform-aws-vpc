@@ -59,7 +59,7 @@ locals {
     }
   ]...)
 
-  tgw_association_subnets = (length(local.tgw_subnets) > 0) ? try(aws_subnet.tgw[*].id, []) : slice(try(aws_subnet.private[*].id, []), 0, length(var.region_config.az_ids))
+  #tgw_association_subnets = (length(local.tgw_subnets) > 0) ? try(aws_subnet.tgw[*].id, []) : slice(try(aws_subnet.private[*].id, []), 0, length(var.region_config.az_ids))
 }
 
 #module "tgw" {

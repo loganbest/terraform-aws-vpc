@@ -14,18 +14,6 @@ variable "region_config" {
   })
 }
 
-variable "default_security_group_ingress" {
-  description = "Ingress rules for the VPC Default Security Group. By default set for allow nothing"
-  type        = list(map(string))
-  default     = []
-}
-
-variable "default_security_group_egress" {
-  description = "Egress rules for the VPC Default Security Group. By default set for allow nothing"
-  type        = list(map(string))
-  default     = []
-}
-
 variable "enable_dns_hostnames" {
   description = "Whether to enable DNS Hostnames"
   type        = bool
@@ -93,17 +81,17 @@ variable "enable_ipam" {
   default     = false
 }
 
-variable "ipam_pool" {
-  description = "AWS IPAM Pool Name"
-  type        = string
-  default     = null
-}
+#variable "ipam_pool" {
+#description = "AWS IPAM Pool Name"
+#type        = string
+#default     = null
+#}
 
-variable "cidr_mask_length" {
-  description = "Mask length to yank from IPAM pool"
-  type        = number
-  default     = 21
-}
+#variable "cidr_mask_length" {
+#description = "Mask length to yank from IPAM pool"
+#type        = number
+#default     = 21
+#}
 
 # VPC PEERS
 variable "vpc_peers" {
@@ -125,11 +113,11 @@ variable "enable_ipv6" {
   default     = false
 }
 
-variable "ipv6_cidr" {
-  description = "Explicit IPv6 CIDR to use for the VPC (don't set when using ipam and var.ipv6_netmask_length"
-  type        = string
-  default     = null
-}
+#variable "ipv6_cidr" {
+#description = "Explicit IPv6 CIDR to use for the VPC (don't set when using ipam and var.ipv6_netmask_length"
+#type        = string
+#default     = null
+#}
 
 variable "ipv6_ipam_pool_id" {
   description = "IPAM Pool ID to use for IPv6 subnet assignment"
@@ -143,11 +131,11 @@ variable "ipv6_netmask_length" {
   default     = 56
 }
 
-variable "ipam_public_scope_id" {
-  description = "IPAM Public Scope to use for IPv6 subnet assignment"
-  type        = string
-  default     = null
-}
+#variable "ipam_public_scope_id" {
+#description = "IPAM Public Scope to use for IPv6 subnet assignment"
+#type        = string
+#default     = null
+#}
 
 variable "public_subnet_assign_ipv6_address_on_creation" {
   description = "Specify true to indicate that network interfaces created in the specified subnet should be assigned an IPv6 address."

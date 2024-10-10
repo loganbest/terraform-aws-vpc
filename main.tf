@@ -27,6 +27,7 @@ locals {
 ################################################################################
 
 resource "aws_vpc" "this" {
+  #checkov:skip=CKV2_AWS_12:Default Security Group is being managed and denies all traffic
   cidr_block = var.vpc_cidr
 
   ipv6_ipam_pool_id   = var.enable_ipv6 ? var.ipv6_ipam_pool_id : null
