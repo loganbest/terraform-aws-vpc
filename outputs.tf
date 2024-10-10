@@ -6,11 +6,20 @@ output "vpc" {
 
 # natgw.tf
 output "aws_eip" {
-  value = try(aws_eip.this, null)
+  value = (can(aws_eip.this)) ? {
+    for k, v in aws_eip.this : v.id => {
+      public_ip = v.public_ip
+    }
+  } : null
 }
 
 output "aws_nat_gateway" {
-  value = try(aws_nat_gateway.this, null)
+  value = (can(aws_nat_gateway.this)) ? {
+    for k, v in aws_nat_gateway.this : v.id => {
+      public_ip = v.public_ip
+      eip_alloc = v.allocation_id
+    }
+  } : null
 }
 
 # private.tf
