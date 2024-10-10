@@ -1,7 +1,7 @@
 # main.tf
 output "vpc" {
   description = "Full VPC submodule output"
-  value       = merge(module.vpc, { vpc_region = data.aws_region.current.name })
+  value       = merge(aws_vpc.this, { vpc_region = data.aws_region.current.name })
 }
 
 # natgw.tf

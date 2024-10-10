@@ -50,4 +50,3 @@ vendor
 terragrunt
 terragrunt_provider.tf
 terragrunt_state.tf
-
