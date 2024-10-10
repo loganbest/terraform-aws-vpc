@@ -1,6 +1,6 @@
 # terraform-aws-vpc
 
-I created this module to have an all-in-one VPC module that supports IPAM and AWS Network Firewall out of the box using best practices. Due to how Terraform and AWS work, there's race conditions on both sides. This module assumes a static IPv4 Address will be provided, and IPv6 will be provided from AWS IPAM. This means that if you use IPAM for IPv4 as well, you'll need to allocate that CIDR outside of this module and pass it in as a static CIDR. 
+I created this module to have an all-in-one VPC module that supports IPAM and AWS Network Firewall out of the box using best practices. Due to how Terraform and AWS work, there's race conditions on both sides. This module assumes a static IPv4 Address will be provided, and IPv6 will be provided from AWS IPAM. This means that if you use IPAM for IPv4 as well, you'll need to allocate that CIDR outside of this module and pass it in as a static CIDR.
 
 ``` hcl
 terraform {
