@@ -1,9 +1,57 @@
 # terraform-aws-vpc
 
-I created this module to have an all-in-one VPC module that supports IPAM and AWS Network Firewall out of the box using best practices.
+I created this module to have an all-in-one VPC module that supports IPAM and AWS Network Firewall out of the box using best practices. Due to how Terraform and AWS work, there's race conditions on both sides. This module assumes a static IPv4 Address will be provided, and IPv6 will be provided from AWS IPAM. This means that if you use IPAM for IPv4 as well, you'll need to allocate that CIDR outside of this module and pass it in as a static CIDR. 
 
 ``` hcl
-"enter example code here from terragrunt"
+terraform {
+  source = "git@github.com:loganbest/terraform-aws-vpc.git//?ref=x.x.x"
+}
+
+locals {
+  global  = read_terragrunt_config(find_in_parent_folders("global.hcl")).locals
+  region  = read_terragrunt_config(find_in_parent_folders("region.hcl")).locals
+  account = read_terragrunt_config(find_in_parent_folders("account.hcl")).locals
+  mocks   = read_terragrunt_config(find_in_parent_folders("mocks.hcl")).locals
+  vpc   = read_terragrunt_config(find_in_parent_folders("vpc.hcl")).locals
+}
+
+dependency "ipam" {
+  config_path = find_in_parent_folders("ipam")
+
+  skip_outputs = local.mocks._skip_outputs
+  mock_outputs = local.mocks.ipam
+}
+
+dependency "flowlogs" {
+  config_path = "${find_in_parent_folders(local.region.region)}/s3/flow_logs"
+
+  skip_outputs = local.mocks._skip_outputs
+  mock_outputs = local.mocks.s3
+}
+
+inputs = {
+  stage = local.account.stage
+  name = "shared-001"
+  vpc_name = local.vpc.vpc_name
+  vpc_cidr = dependency.ipam.outputs.ipv4_cidr
+  enable_ipv6 = true
+  ipv6_ipam_pool_id = dependency.ipam.outputs.ipv6_pool_id
+  ipam_public_scope_id = dependency.ipam.outputs.ipam_public_scope_id
+  ipv6_netmask_length = 56
+
+  region_config = local.global.aws_operating_regions[local.region.region]
+
+  enable_flow_log = true
+  flow_log_destination_type   = "s3"
+  flow_log_traffic_type       = "ALL"
+  flow_log_destination_arn    = dependency.flowlogs.outputs.bucket_arn
+  flow_log_file_format        = "parquet"
+  flow_log_per_hour_partition = true
+}
+
+include {
+  path = find_in_parent_folders("provider.hcl")
+}
 ```
 
 <!-- BEGIN_TF_DOCS -->
