@@ -143,6 +143,12 @@ variable "ipv6_netmask_length" {
   default     = 56
 }
 
+variable "ipam_public_scope_id" {
+  description = "IPAM Public Scope to use for IPv6 subnet assignment"
+  type        = string
+  default     = null
+}
+
 variable "public_subnet_assign_ipv6_address_on_creation" {
   description = "Specify true to indicate that network interfaces created in the specified subnet should be assigned an IPv6 address."
   type        = bool

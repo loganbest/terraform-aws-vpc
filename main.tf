@@ -29,8 +29,8 @@ locals {
 resource "aws_vpc" "this" {
   cidr_block = var.vpc_cidr
 
-  ipv6_cidr_block   = var.enable_ipv6 ? var.ipv6_cidr : null
-  ipv6_ipam_pool_id = var.enable_ipv6 ? var.ipv6_ipam_pool_id : null
+  ipv6_ipam_pool_id   = var.enable_ipv6 ? var.ipv6_ipam_pool_id : null
+  ipv6_netmask_length = var.enable_ipv6 ? var.ipv6_netmask_length : null
 
   instance_tenancy                     = "default"
   enable_dns_hostnames                 = var.enable_dns_hostnames
