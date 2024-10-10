@@ -32,7 +32,6 @@ resource "aws_vpc" "this" {
   ipv6_ipam_pool_id   = var.enable_ipv6 ? var.ipv6_ipam_pool_id : null
   ipv6_netmask_length = var.enable_ipv6 ? var.ipv6_netmask_length : null
 
-  instance_tenancy                     = "default"
   enable_dns_hostnames                 = var.enable_dns_hostnames
   enable_dns_support                   = var.enable_dns_support
   enable_network_address_usage_metrics = var.enable_network_address_usage_metrics
@@ -43,20 +42,25 @@ resource "aws_vpc" "this" {
   )
 }
 
-#module "vpc" {
-#source  = "terraform-aws-modules/vpc/aws"
-#version = "~> 5.13.0"
+resource "aws_default_security_group" "this" {
+  vpc_id = aws_vpc.this.id
 
+  ingress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+  }
 
-#enable_flow_log             = var.enable_flow_log
-#flow_log_destination_type   = var.flow_log_destination_type
-#flow_log_traffic_type       = var.flow_log_traffic_type
-#flow_log_destination_arn    = var.flow_log_destination_arn
-#flow_log_file_format        = var.flow_log_file_format
-#flow_log_per_hour_partition = var.flow_log_per_hour_partition
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+  }
 
-#tags = module.this.tags
-#}
+  tags = merge(
+    module.this.tags
+  )
+}
 
 # VPC Peering with defined VPCs
 resource "aws_vpc_peering_connection" "this" {
