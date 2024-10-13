@@ -20,7 +20,8 @@ resource "aws_subnet" "tgw" {
     {
       Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${var.region_config.az_ids[each.key]}-priv-subnet",
       component = "subnet"
-    }
+    },
+    var.tgw_subnet_tags
   )
 }
 
@@ -35,7 +36,8 @@ resource "aws_route_table" "tgw" {
     {
       Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${each.value}-priv-rt"
       component = "rt"
-    }
+    },
+    var.tgw_route_table_tags
   )
 }
 # route table tgw subnet association
