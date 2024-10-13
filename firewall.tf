@@ -20,7 +20,8 @@ resource "aws_subnet" "firewall" {
     {
       Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${var.region_config.az_ids[each.key]}-firewall-subnet",
       component = "subnet"
-    }
+    },
+    var.firewall_subnet_tags
   )
 }
 
@@ -35,7 +36,8 @@ resource "aws_route_table" "firewall" {
     {
       Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${each.value}-firewall-rt"
       component = "rt"
-    }
+    },
+    var.firewall_route_table_tags
   )
 }
 # route table firewall subnet association

@@ -20,7 +20,8 @@ resource "aws_subnet" "public" {
     {
       Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${var.region_config.az_ids[each.key]}-pub-subnet"
       component = "subnet"
-    }
+    },
+    var.public_subnet_tags
   )
 }
 
@@ -33,7 +34,8 @@ resource "aws_route_table" "public" {
     {
       Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-pub-rt"
       component = "rt"
-    }
+    },
+    var.public_route_table_tags
   )
 }
 # route table public subnet association

@@ -20,7 +20,8 @@ resource "aws_subnet" "private" {
     {
       Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${var.region_config.az_ids[each.key]}-priv-subnet",
       component = "subnet"
-    }
+    },
+    var.private_subnet_tags
   )
 }
 
@@ -35,7 +36,8 @@ resource "aws_route_table" "private" {
     {
       Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${each.value}-priv-rt"
       component = "rt"
-    }
+    },
+    var.private_route_table_tags
   )
 }
 # route table private subnet association

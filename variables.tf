@@ -51,10 +51,34 @@ variable "public_subnets_cidrs" {
   default     = []
 }
 
+variable "public_subnet_tags" {
+  description = "Additional tags for the public subnets"
+  type        = map(string)
+  default     = {}
+}
+
+variable "public_route_table_tags" {
+  description = "Additional tags for the public route tables"
+  type        = map(string)
+  default     = {}
+}
+
 variable "private_subnets_cidrs" {
   description = "list of strings: declare cidrs for the private subnets"
   type        = list(string)
   default     = []
+}
+
+variable "private_subnet_tags" {
+  description = "Additional tags for the private subnets"
+  type        = map(string)
+  default     = {}
+}
+
+variable "private_route_table_tags" {
+  description = "Additional tags for the private route tables"
+  type        = map(string)
+  default     = {}
 }
 
 variable "tgw_subnets_cidrs" {
@@ -63,10 +87,34 @@ variable "tgw_subnets_cidrs" {
   default     = []
 }
 
+variable "tgw_subnet_tags" {
+  description = "Additional tags for the tgw subnets"
+  type        = map(string)
+  default     = {}
+}
+
+variable "tgw_route_table_tags" {
+  description = "Additional tags for the tgw route tables"
+  type        = map(string)
+  default     = {}
+}
+
 variable "firewall_subnets_cidrs" {
   description = "list of strings: declare cidrs for the firewall subnets"
   type        = list(string)
   default     = []
+}
+
+variable "firewall_subnet_tags" {
+  description = "Additional tags for the firewall subnets"
+  type        = map(string)
+  default     = {}
+}
+
+variable "firewall_route_table_tags" {
+  description = "Additional tags for the firewall route tables"
+  type        = map(string)
+  default     = {}
 }
 
 variable "enable_anf" {
