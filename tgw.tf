@@ -18,7 +18,7 @@ resource "aws_subnet" "tgw" {
   tags = merge(
     module.this.tags,
     {
-      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${var.region_config.az_ids[each.key]}-priv-subnet",
+      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${var.region_config.az_ids[each.key]}-tgw-subnet",
       component = "subnet"
     },
     var.tgw_subnet_tags
@@ -34,7 +34,7 @@ resource "aws_route_table" "tgw" {
   tags = merge(
     module.this.tags,
     {
-      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${each.value}-priv-rt"
+      Name      = "${var.stage != null ? "${var.stage}-" : ""}${var.name}-${each.value}-tgw-rt"
       component = "rt"
     },
     var.tgw_route_table_tags
