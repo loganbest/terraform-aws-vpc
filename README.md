@@ -232,5 +232,6 @@ include {
 | <a name="output_aws_subnet_private_ids"></a> [aws\_subnet\_private\_ids](#output\_aws\_subnet\_private\_ids) | private.tf |
 | <a name="output_aws_subnet_public"></a> [aws\_subnet\_public](#output\_aws\_subnet\_public) | n/a |
 | <a name="output_aws_subnet_public_ids"></a> [aws\_subnet\_public\_ids](#output\_aws\_subnet\_public\_ids) | public.tf |
+| <a name="output_default_security_group_id"></a> [default\_security\_group\_id](#output\_default\_security\_group\_id) | n/a |
 | <a name="output_vpc"></a> [vpc](#output\_vpc) | Full VPC submodule output |
 <!-- END_TF_DOCS -->
